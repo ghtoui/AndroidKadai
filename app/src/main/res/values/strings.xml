@@ -13,4 +13,7 @@
     <string name="third_desc">A layout composable that places its children in a horizontal sequence.</string>
     <string name="forth_title">Column composable</string>
     <string name="forth_desc">A layout composable that places its children in a vertical sequence.</string>
+    <string name="phone_number">080-0000-0000</string>
+    <string name="email">mototou3@gmail</string>
+    <string name="address">nagaoka</string>
 </resources>

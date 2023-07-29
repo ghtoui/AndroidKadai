@@ -3,6 +3,7 @@ package com.example.composetest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,11 +11,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -23,6 +27,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -127,7 +133,7 @@ fun QuadRant(firstTitle: String, firstDesc: String, secondTitle: String, secondD
                 Modifier
                     .weight(1f)
                     .fillMaxSize()
-                    .background(Color.Green)
+                    .background(Color.Cyan)
                     .padding(top = 16.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -218,82 +224,70 @@ fun NameCard(modifier: Modifier = Modifier) {
     val image = painterResource(id = R.drawable.android_logo)
     Box(
         modifier
+            .background(color = Color.DarkGray)
             .fillMaxSize()
-            .background(Color.Blue),
-        contentAlignment = Alignment.Center,
     ) {
         Column(
+            modifier
+                .align(Alignment.Center),
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = image,
-                    contentDescription = null,
-                    modifier
-                        .height(128.dp)
-                )
-                Text(
-                    text = "Mori toui",
-                    fontSize = 64.sp,
-                    textAlign = TextAlign.Center
-                )
-                Text(
-                    text = "Summer Intern",
-                    fontSize = 32.sp,
-                    color = Color.Green
-                )
-            }
-            Column(
-            ) {
-                Spacer(
-                    modifier
-                        .width(20.dp)
-                )
-                Row(
-                ) {
-                    Icon(
-                        painter = image,
-                        contentDescription = null,
-                        modifier
-                            .height(32.dp),
-                        tint = Color.Green
-                    )
-                    Text(
-                        text = "phone number",
-                    )
-                }
-                Spacer(modifier = modifier)
-                Row {
-                    Icon(
-                        painter = image,
-                        contentDescription = null,
-                        modifier
-                            .height(32.dp),
-                        tint = Color.Green
-                    )
-                    Text(
-                        text = "sns id",
-                    )
-                }
-                Spacer(modifier = modifier)
-                Row {
-                    Icon(
-                        painter = image,
-                        contentDescription = null,
-                        modifier
-                            .height(32.dp),
-                        tint = Color.Green
-                    )
-                    Text(
-                        text = "email address",
-                    )
-                }
-            }
+            Image(
+                painter = image,
+                contentDescription = null,
+                modifier
+                    .height(128.dp)
+            )
+            Text(
+                text = "Mori toui",
+                fontSize = 64.sp,
+                textAlign = TextAlign.Center,
+                color = Color.White
+            )
+            Text(
+                text = "Summer Intern",
+                fontSize = 32.sp,
+                color = Color.Cyan
+            )
+        }
+        Column(
+            Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 32.dp)
+        ) {
+            DetailProfile(image = image, text = stringResource(id = R.string.phone_number))
+            DetailProfile(image = image, text = stringResource(id = R.string.email))
+            DetailProfile(image = image, text = stringResource(id = R.string.address))
         }
     }
 }
+
+@Composable
+fun DetailProfile(image: Painter, text: String, modifier: Modifier = Modifier) {
+    Divider(
+        color = Color.LightGray,
+        modifier = Modifier
+            .fillMaxWidth()
+            .width(1.dp)
+    )
+    Row {
+        Icon(
+            painter = image,
+            contentDescription = null,
+            modifier
+                .height(32.dp)
+                .padding(start = 64.dp),
+            tint = Color.Cyan
+        )
+        Spacer(modifier.width(16.dp))
+        Text(
+            text = text,
+            color = Color.Cyan
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
