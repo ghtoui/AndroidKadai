@@ -18,6 +18,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Call
+import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -256,15 +263,23 @@ fun NameCard(modifier: Modifier = Modifier) {
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 32.dp)
         ) {
-            DetailProfile(image = image, text = stringResource(id = R.string.phone_number))
-            DetailProfile(image = image, text = stringResource(id = R.string.email))
-            DetailProfile(image = image, text = stringResource(id = R.string.address))
+            DetailProfile(text = stringResource(id = R.string.phone_number), type = "phone")
+            DetailProfile(text = stringResource(id = R.string.email), type = "email")
+            DetailProfile(text = stringResource(id = R.string.address), type = "address")
         }
     }
 }
 
 @Composable
-fun DetailProfile(image: Painter, text: String, modifier: Modifier = Modifier) {
+fun DetailProfile(text: String, type: String,  modifier: Modifier = Modifier) {
+    var iconImage: ImageVector = Icons.Rounded.Info
+    if (type == "email") {
+        iconImage = Icons.Rounded.Email
+    } else if (type == "phone") {
+        iconImage = Icons.Rounded.Call
+    } else if (type == "address") {
+        iconImage = Icons.Rounded.Home
+    }
     Divider(
         color = Color.LightGray,
         modifier = Modifier
@@ -273,7 +288,7 @@ fun DetailProfile(image: Painter, text: String, modifier: Modifier = Modifier) {
     )
     Row {
         Icon(
-            painter = image,
+            iconImage,
             contentDescription = null,
             modifier
                 .height(32.dp)
