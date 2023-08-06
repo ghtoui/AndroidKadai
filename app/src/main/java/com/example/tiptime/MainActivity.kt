@@ -18,6 +18,7 @@ package com.example.tiptime
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -124,7 +125,8 @@ fun EditNumberField(
  * Example would be "$10.00".
  */
 // 15%のチップ金額を計算するメソッド
-private fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
+@VisibleForTesting
+internal fun calculateTip(amount: Double, tipPercent: Double = 15.0): String {
     val tip = tipPercent / 100 * amount
     return NumberFormat.getCurrencyInstance().format(tip)
 }
