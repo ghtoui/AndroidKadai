@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ArtSpace</string>
+    <string name="dice_1">Dice_1</string>
+    <string name="background">BackGround</string>
+    <string name="lemon_tree">LemonTree</string>
+    <string name="lemon">Lemon</string>
+    <string name="lemonade">Lemonade</string>
+    <string name="empty_glass">EmptyGlass</string>
+    <string name="complete_task">CompleteTask</string>
+</resources>
