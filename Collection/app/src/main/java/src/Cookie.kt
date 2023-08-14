@@ -65,14 +65,42 @@ fun main() {
         println("$it")
     }
 
-    // 繋げることもできる。これはメソッドチェーンみたいな感じのやつと同じっぽい
-    val softBakedMenu = cookies.filter {
+    // 繋げることもできる。これはメソッドチェーンで書ける
+//    val softBakedMenu = cookies.filter {
+//        it.softBaked
+//    }.map {
+//        "${it.name} - $${it.price}"
+//    }
+//    println("softBaked")
+//    softBakedMenu.forEach {
+//        println("$it")
+//    }
+
+    val groupedMenu = cookies.groupBy {
         it.softBaked
-    }.map {
-        "${it.name} - $${it.price}"
     }
+    val softBakedMenu = groupedMenu[true] ?: listOf()
+    val crunchyMenu = groupedMenu[false] ?: listOf()
     println("softBaked")
     softBakedMenu.forEach {
-        println("$it")
+        println("${it.name} - ${it.price}")
+    }
+    println("crunchy")
+    crunchyMenu.forEach {
+        println("${it.name} - ${it.price}")
+    }
+
+    println("total price")
+    val totalPrice = cookies.fold(0.0) { total, cookie ->
+        total + cookie.price
+    }
+    println("Total price: $${totalPrice}")
+
+    println("sort")
+    val alphabeticalMenu = cookies.sortedBy {
+        it.name
+    }
+    alphabeticalMenu.forEach {
+        println("${it.name}")
     }
 }
