@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">30 Days Of Wellness</string>
+    <string name="question_1">A社で雇用しているオペレータのQ氏を，B社に派遣することになった。労働者派遣法で定められているものはどれか。</string>
+    <string name="answer_1">プログラムの実行時間を短縮する。</string>
+    <string name="question_2">USBハブの説明として，適切なものはどれか。</string>
+    <string name="answer_2">ハブを利用して，外部機器をハブを含めて最大127台まで接続できる。</string>
+    <string name="question_3">サービスデスク組織の構造とその特徴のうち，ローカルサービスデスクのものはどれか。</string>
+    <string name="answer_3">サービスデスクを利用者の近くに配置することによって，言語や文化の異なる利用者への対応，専用要員によるVIP対応などができる。</string>
+    <string name="question_4">LAN において，伝送距離を延長するために伝送路の途中でデータの信号波形を増幅・整形して，物理層での中継を行う装置はどれか。</string>
+    <string name="answer_4">リピータ</string>
+    <string name="question_5">BYODの説明，及びその情報セキュリティリスクに関する記述のうち，適切なものはどれか。</string>
+    <string name="answer_5">従業員が私的に保有する情報端末を業務に利用することであり，セキュリティ設定の不備に起因するウイルス感染などの情報セキュリティリスクが増大する。</string>
+    <string name="question_6">ソフトウェア制御における，ポーリング制御はどれか。</string>
+    <string name="answer_6">CPUが状態レジスタ又はビジー信号などを読み出して，入出力装置の状態を監視する。</string>
+    <string name="question_7">SWOT分析を用いて識別した，自社製品に関する外部要因はどれか。</string>
+    <string name="answer_7">新規参入による脅威</string>
+    <string name="question_8">用語が統一されていない文書を対象として全文検索を行うとき，シソーラスを用いることによって得られる効果はどれか。</string>
+    <string name="answer_8">同義語の利用によって表記の揺れを吸収し，漏れの少ない検索が可能になる。</string>
+    <string name="question_9">要件定義プロセスで実施すべきものはどれか。</string>
+    <string name="answer_9">新しい業務の手順やルール，制約条件を明確にし，利害関係者間で合意する。</string>
+</resources>
