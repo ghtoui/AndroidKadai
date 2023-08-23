@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,14 +31,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lemonadeapp.ui.LemonViewModel
 import com.example.lemonadeapp.ui.theme.LemonadeAppTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             LemonadeAppTheme {
-                Lemonade()
+                LemonadeApp()
             }
         }
     }
@@ -46,41 +49,30 @@ class MainActivity : ComponentActivity() {
 @Preview
 @Composable
 fun Lemonade() {
-    LemonadeImageAndText()
+    LemonadeApp()
 }
 
 @Composable
-fun LemonadeImageAndText(modifier: Modifier = Modifier
-    .fillMaxSize()
-    .background(Color.White)
-    .wrapContentSize(Alignment.Center)
+fun LemonadeApp(
+    viewModel: LemonViewModel = viewModel()
 ) {
-    var state by remember {
-        mutableStateOf(0)
-    }
-
-    var count by remember {
-        mutableStateOf(0)
-    }
-
-    var tappedCount by remember {
-        mutableStateOf(0)
-    }
-
-    val imageResource = when(state % 4) {
-        0 -> R.drawable.lemon_tree
-        1 -> R.drawable.lemon_squeeze
-        2 -> R.drawable.lemon_drink
-        else -> R.drawable.lemon_restart
-    }
-
-    val textResource = when(state % 4) {
-        0 -> R.string.tap_lemon_tree
-        1 -> R.string.keep_tapping_lemon
-        2 -> R.string.tap_lemonade
-        else -> R.string.tap_empty_glass
-    }
-
+    val uiState by viewModel.uiState.collectAsState()
+    LemonadeImageAndText(
+        textResource = uiState.text,
+        imageResource = uiState.image,
+        imageClick = { viewModel.updateState() }
+    )
+}
+@Composable
+fun LemonadeImageAndText(
+    textResource: Int,
+    imageResource: Int,
+    imageClick: () -> Unit,
+    modifier: Modifier = Modifier
+        .fillMaxSize()
+        .background(Color.White)
+        .wrapContentSize(Alignment.Center)
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -96,17 +88,7 @@ fun LemonadeImageAndText(modifier: Modifier = Modifier
             contentDescription = null,
             modifier = Modifier
                 .clickable {
-                    // 単純な分岐はwhenの方が楽
-                    when (state % 4) {
-                        1 -> tappedCount++
-                        else -> state++
-                    }
-                    if (state % 4 == 1 && tappedCount == 0) {
-                        count = (2..4).random()
-                    } else if (tappedCount == count) {
-                        state++
-                        tappedCount = 0
-                    }
+                    imageClick()
                 }
                 // これで枠線つけれる
                 .border(
