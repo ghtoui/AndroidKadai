@@ -14,7 +14,7 @@ class LemonViewModel: ViewModel() {
     val uiState: StateFlow<LemonUiState> = _uiState.asStateFlow()
 
     init {
-        getRandomCount()
+        reset()
     }
 
     private fun getRandomCount() {
@@ -34,8 +34,8 @@ class LemonViewModel: ViewModel() {
         }
     }
 
-    fun updateState() {
-        val count = when (_uiState.value.count) {
+    fun updateState(count: Int?) {
+        val count = count?: when (_uiState.value.count) {
             1 -> 2
             2 -> 3
             3 -> 4
@@ -76,5 +76,8 @@ class LemonViewModel: ViewModel() {
         }
     }
 
+    fun reset() {
+        updateState(count = 0)
+    }
 
 }
