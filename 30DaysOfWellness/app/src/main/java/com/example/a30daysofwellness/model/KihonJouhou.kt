@@ -6,5 +6,6 @@ import androidx.annotation.StringRes
 data class KihonJouhou(
     @StringRes val question: Int,
     @StringRes val answer: Int,
-    @DrawableRes val questionImage: Int
+    @DrawableRes val questionImage: Int,
+    var isVisible: Boolean = false
 )
