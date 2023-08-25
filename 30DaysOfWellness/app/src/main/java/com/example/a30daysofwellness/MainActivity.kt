@@ -1,11 +1,14 @@
 package com.example.a30daysofwellness
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,30 +16,35 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.a30daysofwellness.model.KihonJouhou
 import com.example.a30daysofwellness.model.KihonJouhouRepository
+import com.example.a30daysofwellness.ui.WellnessViewModel
 import com.example.a30daysofwellness.ui.theme._30DaysOfWellnessTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
 
+@ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,51 +61,90 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@ExperimentalMaterial3Api
 @Composable
-fun WellnessApp() {
-    WellnessList(kihonJouhouList = KihonJouhouRepository.KihonJouhouList)
+fun WellnessApp(
+    viewModel: WellnessViewModel = viewModel()
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    Scaffold(
+        topBar = {
+            WellnessTopAppBar(
+                refreshIconClick = viewModel::reset
+            )
+        }
+    ) { it ->
+        WellnessList(
+            viewModel = viewModel,
+            kihonJouhouList = uiState.kihonJouhouList,
+            modifier = Modifier.padding(it)
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WellnessList(kihonJouhouList: List<KihonJouhou>) {
-    Scaffold(
-        topBar = {
-            WellnessTopAppBar()
-        }
-    ) { it ->
-        LazyColumn(contentPadding = it) {
-            items(kihonJouhouList) { kihonJouhou ->
-                WellnessItem(
-                    kihonJouhou = kihonJouhou,
-                    modifier = Modifier
-                        .padding(start = dimensionResource(id = R.dimen.padding_medium),
-                            end = dimensionResource(id = R.dimen.padding_medium),
-                            bottom = dimensionResource(id = R.dimen.padding_small))
-                )
-            }
+fun WellnessList(
+    viewModel: WellnessViewModel,
+    kihonJouhouList: List<KihonJouhou>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(kihonJouhouList) { kihonJouhou ->
+            WellnessItem(
+                kihonJouhou = kihonJouhou,
+                itemClick = viewModel::itemClick,
+                modifier = Modifier
+                    .padding(start = dimensionResource(id = R.dimen.padding_medium),
+                        end = dimensionResource(id = R.dimen.padding_medium),
+                        bottom = dimensionResource(id = R.dimen.padding_small))
+            )
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WellnessTopAppBar() {
+fun WellnessTopAppBar(
+    refreshIconClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     CenterAlignedTopAppBar(
         title = {
-            Text(
-                text = "30 Days Of Wellness"
-            )
+            Row(
+                modifier = modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Spacer(modifier = Modifier)
+                Text(
+                    text = stringResource(R.string._30_days_of_wellness)
+                )
+                Icon(
+                    Icons.Filled.Refresh,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clickable{
+                            refreshIconClick()
+                        }
+                )
+            }
         }
     )
 }
 
 @Composable
-fun WellnessItem(kihonJouhou: KihonJouhou, modifier: Modifier = Modifier) {
-    var isVisible by remember { mutableStateOf(false) }
+fun WellnessItem(
+    kihonJouhou: KihonJouhou,
+    itemClick: (item: KihonJouhou) -> Unit,
+    modifier: Modifier = Modifier) {
+
     Card(modifier = modifier
         .clickable(
-            onClick = { isVisible = !isVisible }
+            onClick = { itemClick(kihonJouhou) }
         )
     ) {
         Column(
@@ -113,7 +160,7 @@ fun WellnessItem(kihonJouhou: KihonJouhou, modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_height)))
             // タップで切り替えれるように
-            if (isVisible) WellnessAnswer(answerId = kihonJouhou.answer)
+            if (kihonJouhou.isVisible) WellnessAnswer(answerId = kihonJouhou.answer)
         }
     }
 }
@@ -146,6 +193,7 @@ fun WellnessQuestionImage(questionImageId: Int, modifier: Modifier = Modifier) {
     )
 }
 
+@ExperimentalMaterial3Api
 @Preview()
 @Composable
 fun WellnessPreview() {
