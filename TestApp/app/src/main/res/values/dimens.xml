@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spacer_min">16dp</dimen>
+    <dimen name="spacer_large">128dp</dimen>
+    <dimen name="icon_shape">64dp</dimen>
+    <dimen name="icon_size">64dp</dimen>
+</resources>
