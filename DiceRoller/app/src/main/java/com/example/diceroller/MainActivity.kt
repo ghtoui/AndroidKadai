@@ -93,7 +93,7 @@ fun DiceRollerApp(
     val uiState by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
-            AppTopBar(iconButtonClick = { viewModel.reset() })
+            AppTopBar(iconButtonClick =  viewModel::reset)
         }
     ) { it ->
         DiceWithButtonAndImage(
